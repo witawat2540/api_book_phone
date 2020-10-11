@@ -1,5 +1,4 @@
-// const { Op } = require("sequelize");
-const sequelize = require("./config").sequelize;
+const { Op } = require("sequelize");
 const book_phone = require("./model/model_book_phone");
 
 exports.All = async(req, res, next) => {
@@ -26,20 +25,21 @@ exports.bookDelete = async(req, res, next) => {
 
 exports.bookSearch = async(req, res, next) => {
     res.send(
-        // await book_phone.findAll({
-        //     where: {
-        //         [Op.or]: [{
-        //             nickname: {
-        //                 [Op.like]: "%" + req.body.keyword + "%",
-        //             },
-        //         }, ],
-        //         [Op.or]: [{
-        //             tel: {
-        //                 [Op.like]: "%" + req.body.keyword + "%",
-        //             },
-        //         }, ],
-        //     },
-        // })
-        await sequelize.query("SELECT * FORM phons")
+        await book_phone.findAll({
+            where: {
+                [Op.or]: [{
+                        nickname: {
+                            [Op.like]: "%" + req.body.keyword + "%",
+                        },
+                    },
+                    {
+                        tel: {
+                            [Op.like]: "%" + req.body.keyword + "%",
+                        },
+                    },
+                ],
+            },
+        })
+        // await sequelize.query("SELECT * FORM phons")
     );
 };
